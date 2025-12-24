@@ -110,7 +110,7 @@ const ScheduledPickups = () => {
                 aria-label="Loading Spinner"
                 data-testid="loader"
               /></div>}
-              {((!sheduledPickups && !isLoading) || (sheduledPickups?.length === 0 && !isLoading)) && <div style={{ height: "350px" }} className="flex items-center justify-center"><span>No Booking Found</span></div>}
+              {((!sheduledPickups && !isLoading) || (sheduledPickups?.length === 0 && !isLoading)) && <div style={{ height: "350px" }} className="flex items-center justify-center"><span>No Pickups Found</span></div>}
             </div>
           </div>
           {!isSearch && <TablePagination

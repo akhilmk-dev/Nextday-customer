@@ -41,14 +41,14 @@ const normalValidation = Yup.object({
       return true;
     }),
 
-  boxType: Yup.string().required("Package type is required"),
+  // boxType: Yup.string().required("Package type is required"),
   packages: Yup.array().of(
     Yup.object().shape({
       boxWidth: Yup.number().required("Width is required").positive().integer(),
       boxBreadth: Yup.number().required("Breadth is required").positive().integer(),
       boxLength: Yup.number().required("Height is required").positive().integer(),
       approxWeight: Yup.number()
-        .required("Approx weight is required")
+        .required("Actual weight is required")
         .positive()
         .integer(),
       boxDescription: Yup.string()
@@ -127,6 +127,7 @@ const CreatePickupPage = () => {
   const [skip, setSkip] = useState(false);
   const [isReversePickup, setIsReversePickup] = useState(false);
   const [isToPay, setIsToPay] = useState(false);
+  const [isAppoinment,setIsAppointment] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   // const localStoredData = JSON.parse(localStorage.getItem("package"));
   let localStoredData = null;
@@ -147,6 +148,8 @@ const CreatePickupPage = () => {
   const queryParams = new URLSearchParams(location.search);
   const pickupReqId = queryParams.get("pickupReqId");
   const [searchParams] = useSearchParams();
+  const [noOfBoxes,setNoOfBoxes]=useState();
+  const [isAllSame,setIsAllSame] = useState();
   const editId = searchParams.get("id");
   // console.log(packages, "pack in cRF")
 
@@ -158,8 +161,8 @@ const CreatePickupPage = () => {
     // pickupLocation: "",
     // postalCode: ""
     // ,
-    modeType: "",
-    boxType: "",
+    modeType: "road",
+    boxType: "nondox",
     toPay: 0,
     packages: [
       {
@@ -171,6 +174,7 @@ const CreatePickupPage = () => {
         approxWeight: "",
         packageValue: "",
         images: null,
+        ewaybillNo:"",
         declarationFile: null,
         ewaybillFile: null,
         withInvoice: false
@@ -210,8 +214,8 @@ const CreatePickupPage = () => {
         // pickupLocation: "",
         // postalCode: ""
         // ,
-        modeType: "",
-        boxType: "",
+        modeType: "road",
+        boxType: "nondox",
         toPay: 0,
         packages: [
           {
@@ -222,6 +226,7 @@ const CreatePickupPage = () => {
             volumetricWeight: "",
             approxWeight: "",
             packageValue: "",
+            ewaybillNo:"",
             images: null,
             ewaybillFile: null,
             withInvoice: false
@@ -270,6 +275,7 @@ const CreatePickupPage = () => {
       setSelectedConsigner(consignerAddress?.AddressId);
       setSelectedConsignee(consigneeAddress?.AddressId)
       setIsToPay(bookingDetails?.booking?.IsToPay);
+      setIsAppointment(bookingDetails?.isAppoinment);
       setIsReversePickup(bookingDetails?.booking?.IsReversePickup)
       sessionStorage.setItem("package", packages);
     }
@@ -322,7 +328,7 @@ const CreatePickupPage = () => {
     formik.setFieldTouched("pickupScheduleFrom", true);
     formik.setFieldTouched("pickupScheduleTo", true);
     formik.setFieldTouched("toPay", true);
-    formik.setFieldTouched("boxType", true);
+    // formik.setFieldTouched("boxType", true);
 
     // Mark package fields
     formik.values.packages.forEach((_, index) => {
@@ -386,6 +392,7 @@ const CreatePickupPage = () => {
             consignerAddressId: selectedConsigner,
             consigneeAddressId: selectedConsignee,
             isReversePickup: isReversePickup,
+            isAppoinment: isAppoinment,
             isPickupRequest: skip ? 1 : 0,
             isTopay: isToPay,
             noOfBoxes: values?.packages?.length,
@@ -448,6 +455,7 @@ const CreatePickupPage = () => {
             consignerAddressId: selectedConsigner,
             consigneeAddressId: selectedConsignee,
             isReversePickup: isReversePickup,
+            isAppoinment: isAppoinment,
             isPickupRequest: skip ? 1 : 0,
             isTopay: isToPay,
             noOfBoxes: values?.packages?.length,
@@ -516,15 +524,18 @@ const CreatePickupPage = () => {
       if (parsedData?.isReversePickup !== undefined) {
         setIsReversePickup(parsedData.isReversePickup);
       }
+      if (parsedData?.isAppoinment !== undefined) {
+        setIsAppointment(parsedData.isAppoinment);
+      }
     }
   }, []);
 
   useEffect(() => {
     sessionStorage.setItem(
       "pickupOptions",
-      JSON.stringify({ isToPay, isReversePickup })
+      JSON.stringify({ isToPay, isReversePickup,isAppoinment })
     );
-  }, [isToPay, isReversePickup]);
+  }, [isToPay, isReversePickup,isAppoinment]);
 
   const saveTimeoutRef = useRef(null);
 
@@ -542,7 +553,6 @@ const CreatePickupPage = () => {
           console.warn("SessionStorage limit exceeded:", sizeInKB.toFixed(2), "KB");
           return;
         }
-
         sessionStorage.setItem(key, jsonData);
       } catch (error) {
         console.error("Failed to save sessionStorage:", error);
@@ -620,12 +630,22 @@ const CreatePickupPage = () => {
 
       formik.validateForm().then((errors) => {
         markAllFieldsTouched(); // Mark fields as touched AFTER validation triggers errors
-
         if (Object.keys(errors).length === 0 && !skip) {
-          setFormData(formik.values); // Only update formData when you're moving ahead
+          if(isAllSame){
+            const packages= new Array(Number(noOfBoxes)).fill(null).map(() => ({ ...formik.values.packages[0] }));
+            setFormData({...formik.values,packages:packages})
+          }else{
+            setFormData(formik.values);
+          }
+           // Only update formData when you're moving ahead
           setCurrentStep((prevStep) => Math.min(prevStep + 1, 3));
         } else if (Object.keys(errors).length === 0 && skip) {
-          setFormData(formik.values); // Same here
+          if(isAllSame){
+            const packages= new Array(noOfBoxes).fill(null).map(() => ({ ...formik.values.packages[0] }));
+            setFormData({...formik.values,packages:packages})
+          }else{
+            setFormData(formik.values); 
+          }
           formik.handleSubmit();
         } else {
           console.log(errors, "Errors found. Not moving to the next step.");
@@ -650,8 +670,8 @@ const CreatePickupPage = () => {
         {/* ------------- pickup first page ----------- */}
         {currentStep === 1 && (
           <>
-            <PickupSection1 formik={formik} isReversePickup={isReversePickup} setIsReversePickup={setIsReversePickup} isToPay={isToPay} setIsToPay={setIsToPay} />
-            <PickupSection2 formik={formik} setSkip={setSkip} skip={skip} packages={packages} setPackages={setPackages} imagePreviews={imagePreviews} setImagePreviews={setImagePreviews} />
+            <PickupSection1 formik={formik} isAppoinment={isAppoinment} setIsAppointment={setIsAppointment} isReversePickup={isReversePickup} setIsReversePickup={setIsReversePickup} isToPay={isToPay} setIsToPay={setIsToPay} />
+            <PickupSection2 noOfBoxes={noOfBoxes} isAllSame={isAllSame}  setNoOfBoxes={setNoOfBoxes} setIsAllSame={setIsAllSame}  formik={formik} setSkip={setSkip} skip={skip} packages={packages} setPackages={setPackages} imagePreviews={imagePreviews} setImagePreviews={setImagePreviews} />
           </>
         )}
         {/* ------------- pickup first page end ----------- */}
@@ -668,7 +688,7 @@ const CreatePickupPage = () => {
 
         {/* ------------- pickup third page ----------- */}
 
-        {currentStep === 3 && <CreatePickup_Stage3 summaryData={summaryData} setSummaryData={setSummaryData} insurance={insurance} setInsurance={setInsurance} ref={stage3Ref} formik={formik} selectedConsignee={selectedConsignee} selectedConsigner={selectedConsigner} selectedConsigneeData={selectedConsigneeData} selectedConsignerData={selectedConsignerData} />}
+        {currentStep === 3 && <CreatePickup_Stage3 summaryData={summaryData} setSummaryData={setSummaryData} insurance={insurance} setInsurance={setInsurance} isAppoinment={isAppoinment} ref={stage3Ref} formik={formik} selectedConsignee={selectedConsignee} selectedConsigner={selectedConsigner} selectedConsigneeData={selectedConsigneeData} selectedConsignerData={selectedConsignerData} />}
 
         {/* ------------- pickup third page end----------- */}
 
@@ -688,11 +708,11 @@ const CreatePickupPage = () => {
               // style={{ display: currentStep > 1 ? "block" : "none" }}
               />
             </div>
-            {currentStep === 1 && (<Button
+            {/* {currentStep === 1 && (<Button
               buttonText="Back"
               className="px-9 absolute left-4"
               onClick={() => navigate(-1)}
-            />)}
+            />)} */}
 
             {currentStep === 3 ? (
               <>
@@ -700,7 +720,7 @@ const CreatePickupPage = () => {
                   buttonText={
                     isSubmitting ? (
                       <ClipLoader size={18} color='white' />
-                    ) : "Complete Pickup"
+                    ) : "Create Booking"
                   }
                   className={'min-w-[180px] px-3 absolute right-4'}
                   onClick={() => {

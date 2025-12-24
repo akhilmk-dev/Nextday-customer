@@ -7,8 +7,10 @@ import crain from "../../images/10.png.png";
 import tracking from "../../images/11.png.png";
 import { FaArrowRight } from "react-icons/fa";
 import Button from "../button/Button";
+import { useNavigate } from "react-router-dom";
 
 const About = () => {
+  const navigate = useNavigate()
   return (
     <>
       {/* ---------------- main div ------------------ */}
@@ -31,7 +33,7 @@ const About = () => {
 
           {/* ---------------- about content --------------- */}
           <div className="  grid-col-span-1 ">
-            <div className="flex gap-2  items-center mt-10 ">
+            {/* <div className="flex gap-2  items-center mt-10 ">
               <div>
                 <div className="relative">
                   <hr className="w-[1.25rem] h-1 my-1 border-custom-green border-t-2  dark:border-custom-green ml-auto" />
@@ -48,7 +50,7 @@ const About = () => {
                 <img src={logo} alt="logo" />
 
               </div>
-            </div>
+            </div> */}
             {/* ---------- about paragragph ------------ */}
             <div className="mt-5">
               <strong className="text-4xl font-sansation font-bold inline-block ">
@@ -112,7 +114,7 @@ const About = () => {
                 </div>
                 <div className="my-5 ">
 
-                  <Button buttonText="Load more" icon={<FaArrowRight />} className="w-[10.6rem]" />
+                  <Button onClick={()=>navigate('/services')} buttonText="Load more" icon={<FaArrowRight />} className="w-[10.6rem]" />
                 </div>
               </div>
             </div>

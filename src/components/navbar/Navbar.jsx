@@ -138,7 +138,7 @@ function Navbar({ className }) {
                     <div className="flex items-center gap-2">
                       <div className="flex-none font-sansation font-regular text-xs flex gap-1 ml-3 p-2 items-center ">
                         <IoMail className="text-custom-green" />
-                        <p>nextday@gmail.com</p>
+                        <p>csm@nextday.services</p>
                       </div>
                       <div className="flex-none  font-sansation font-regular text-xs  flex gap-1  p-2 items-center ">
                         <IoMdTime className="text-custom-green" />

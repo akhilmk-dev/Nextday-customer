@@ -111,7 +111,7 @@ const RecurringPickupList = () => {
                                 </div>}
 
                                 <div>
-                                    <p className='font-sansation text-gray-400'>Approx Weight</p>
+                                    <p className='font-sansation text-gray-400'>Actual Weight</p>
                                     <p className='font-sansation'>{item?.approxWeight}</p>
                                 </div>
                             </div>

@@ -194,6 +194,7 @@ const LandingPage = () => {
                   buttonText="Load more"
                   icon={<FaArrowRight />}
                   className="px-3 "
+                  onClick={()=>navigate('/services')}
                 />
               </div>
             </div>
@@ -302,9 +303,9 @@ const LandingPage = () => {
                             </div>
                             {/* Error message outside the input box div */}
                             {isAwbSelected &&
-                              (!formik.values.trackingId && check) && (
+                              (formik.touched.trackingId && formik.errors.trackingId) && (
                                 <div className="text-red-500 text-sm mt-1">
-                                  Tracking Id is required
+                                  Traking Id is required
                                 </div>
                               )}
                             {!isAwbSelected &&
@@ -318,7 +319,7 @@ const LandingPage = () => {
                           <div className="flex justify-center">
                             <div className="mt-3">
                               <ReCAPTCHA
-                                sitekey="6Lf94U8rAAAAALKTtDsMDBfY9bT14sCPiq4G3awr"
+                                sitekey="6Lc9ca4rAAAAAIS9AbQ_0PLhuTbx398CNm7jOAy8"
                                 onChange={handleRecaptchaChange}
                               />
                             </div>
@@ -342,7 +343,6 @@ const LandingPage = () => {
                             <p className="text-center text-gray-800 mt-0">No data found</p>
                           )
                         )}
-
                         <hr className="border-t-2" />
                         <p className="text-custom-blue text-center font-sansation font-regular text-sm">
                           {" "}
@@ -578,7 +578,7 @@ const LandingPage = () => {
                             </div>
                             <div className="border flex flex-col p-2">
                               <p className="font-sansation text-sm">State</p>
-                              <h3 className="bold-sansation text-md">{locationData?.state || '-'}45</h3>
+                              <h3 className="bold-sansation text-md">{locationData?.state || '-'}</h3>
                             </div>
                             <div className="border flex flex-col p-2">
                               <p className="font-sansation text-sm">Branch</p>
@@ -601,12 +601,6 @@ const LandingPage = () => {
                             </div>
                             <div className="border p-2">
                               <span className="font-sansation text-sm">{locationData?.roadoda ? <TiTick style={{ display: "inline" }} className="text-2xl text-custom-green" /> : <IoClose style={{ display: "inline" }} className="text-2xl text-red-500" />} Road ODA</span>
-                            </div>
-                            <div className="border p-2">
-                              <span className="font-sansation text-sm">{locationData?.prime ? <TiTick style={{ display: "inline" }} className="text-2xl text-custom-green" /> : <IoClose style={{ display: "inline" }} className="text-2xl text-red-500" />} Prime</span>
-                            </div>
-                            <div className="border p-2">
-                              <span className="font-sansation text-sm">{locationData?.primeplus ? <TiTick style={{ display: "inline" }} className="text-2xl text-custom-green" /> : <IoClose style={{ display: "inline" }} className="text-2xl text-red-500" />} {`Prime Plus` + " > +" + "12PM"}</span>
                             </div>
                             <div className="border p-2">
                               <span className="font-sansation text-sm">{locationData?.reversePickup ? <TiTick style={{ display: "inline" }} className="text-2xl text-custom-green" /> : <IoClose style={{ display: "inline" }} className="text-2xl text-red-500" />} Reverse-Pickup</span>

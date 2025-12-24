@@ -20,27 +20,41 @@ const dateTimeformater = (isoString) => {
   return `${formattedDate} | ${formattedTime}`;
 };
 
+// const stepData = [
+//   {
+//     name: "bookingcreated",
+//     hub: "booking created",
+//     check: 0
+//   },
+//   {
+//     name: "intransit",
+//     check: 0,
+//     hub: "In transit"
+//   },
+//   {
+//     name: "outfordelivery",
+//     hub: "Out for delivery",
+//     check: 0
+//   },
+//   {
+//     name: "delivered",
+//     hub: "Delivered",
+//     check: 0
+//   },
+// ];
+
 const stepData = [
   {
-    name: "bookingcreated",
-    hub: "booking created",
+    name: "starting hub",
+    hub: "starting hub",
     check: 0
   },
   {
-    name: "intransit",
+    name: "Ending gub",
     check: 0,
-    hub: "In transit"
+    hub: "Ending hub"
   },
-  {
-    name: "outfordelivery",
-    hub: "Out for delivery",
-    check: 0
-  },
-  {
-    name: "delivered",
-    hub: "Delivered",
-    check: 0
-  },
+  
 ];
 
 const QontoConnector = styled(StepConnector)(({ theme }) => ({
@@ -70,9 +84,9 @@ const CheckoutStepper = ({ stepsConfig = [] }) => {
   const cardData = stepData.map((step, index) => {
     if (stepsConfig[index]) {
       return {
-        name: stepsConfig[index].status,
+        name: stepsConfig[index].hub,
         description: dateTimeformater(stepsConfig[index].datetime),
-        status: stepsConfig[index].status,
+        status: stepsConfig[index].hub,
         hub: stepsConfig[index].hub,
         check: 2
       };
@@ -94,7 +108,7 @@ const CheckoutStepper = ({ stepsConfig = [] }) => {
           {cardData.map((item) => (
             <Step key={item.name}>
               <StepLabel StepIconComponent={CustomStepIcon}>
-                <p className="font-sansation text-custom-green">{item.hub}</p>
+                <p className="font-sansation text-custom-green">{item.status}</p>
                 <p className="font-sansation text-sm" style={{fontSize:"12px"}}>{item?.description ? item?.description : "-"}</p>
               </StepLabel>
             </Step>

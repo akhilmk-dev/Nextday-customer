@@ -7,8 +7,10 @@ import checkbox from "../../images/image 74.png";
 import aeroplane from "../../images/image 75.png";
 import { FaArrowRight } from "react-icons/fa";
 import Button from "../button/Button";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const Logistics_Services = () => {
+  const navigate = useNavigate()
   // ------------------- data for cards ------------------
   const data = [
     {
@@ -42,7 +44,7 @@ const Logistics_Services = () => {
     <>
       <div className="  container mx-auto py-[2.5rem]">
         {/* ---------------- heading component ------------------- */}
-        <div className="grid grid-cols-1  justify-items-center md:justify-items-start lg:justify-items-start xl:justify-items-start md:px-12 lg:px-0 xl:px-5 mx-5">
+        {/* <div className="grid grid-cols-1  justify-items-center md:justify-items-start lg:justify-items-start xl:justify-items-start md:px-12 lg:px-0 xl:px-5 mx-5">
           <div className="grid-col-1  flex gap-2 items-center  ">
             <div>
               <div className="relative">
@@ -59,7 +61,7 @@ const Logistics_Services = () => {
               <img src={logo} alt="logo" />
             </div>
           </div>
-        </div>
+        </div> */}
         {/* ---------------- heading component end  ------------------- */}
 
         {/* ---------------- service section ---------------- */}
@@ -75,6 +77,7 @@ const Logistics_Services = () => {
               buttonText="All Services"
               icon={<FaArrowRight />}
               className="w-[10rem]"
+              onClick={()=>navigate('/services')}
             />
           </div>
         </div>
@@ -90,6 +93,7 @@ const Logistics_Services = () => {
               description={item.description}
               icon={item.icon}
               buttonText={item.buttonText}
+              onClick={()=>navigate('/services')}
             />
           ))}
         </div>

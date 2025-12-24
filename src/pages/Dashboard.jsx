@@ -133,7 +133,7 @@ const Dashboard = () => {
 
       <div className="grid grid-cols-2 font-sansation font-regular pt-10 ">
         <div>
-          <p>Recent Shipment</p>
+          <p>Recent Shipments</p>
         </div>
         <div className="text-end">
           {!showAll && (
@@ -180,7 +180,7 @@ const Dashboard = () => {
         aria-label="Loading Spinner"
         data-testid="loader"
       /></div>}
-      {((!sheduledPickups && !isLoading) || (sheduledPickups.length === 0 && !isLoading)) && <div style={{ height: "250px" }} className="flex items-center justify-center"><span>No Booking Found</span></div>}
+      {((!sheduledPickups && !isLoading) || (sheduledPickups.length === 0 && !isLoading)) && <div style={{ height: "250px" }} className="flex items-center justify-center"><span>No Pickups Found</span></div>}
 
     </div>
   );

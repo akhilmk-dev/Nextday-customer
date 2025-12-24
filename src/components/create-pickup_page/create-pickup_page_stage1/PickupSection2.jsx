@@ -10,10 +10,10 @@ import CustomInputField from "../../input-field/CustomInput";
 import { MdLockOpen } from "react-icons/md";
 import { MdLockOutline } from "react-icons/md";
 
-const PickupSection2 = ({ formik, setSkip, skip, imagePreviews, setImagePreviews, packages, setPackages }) => {
+const PickupSection2 = ({ formik, setSkip, skip, imagePreviews, setImagePreviews, packages, setPackages,setNoOfBoxes,setIsAllSame,noOfBoxes,isAllSame }) => {
   const fileInputRefs = useRef([]);
   const [indexNo, setIndexNo] = useState();
-  const [repeatItem,setRepeatItem] = useState({});
+  const [repeatItem, setRepeatItem] = useState({});
 
   const calculateVolumetricWeight = (index) => {
     const length = formik.values.packages[index]?.boxLength || 0;
@@ -41,7 +41,7 @@ const PickupSection2 = ({ formik, setSkip, skip, imagePreviews, setImagePreviews
       const reader = new FileReader();
       reader.onloadend = () => {
         const base64String = reader.result;
-        formik.setFieldValue(`packages[${index}].${fieldName}Name`, file.name); 
+        formik.setFieldValue(`packages[${index}].${fieldName}Name`, file.name);
         formik.setFieldValue(`packages[${index}].${fieldName}`, base64String);
       };
       reader.readAsDataURL(file); // Convert file to base64
@@ -73,26 +73,33 @@ const PickupSection2 = ({ formik, setSkip, skip, imagePreviews, setImagePreviews
       reader.readAsDataURL(file);
     });
   };
-
+  const options2 = [
+    // { value: "dox", label: "Dox" },
+    { value: "nondox", label: "Non Dox" }
+  ];
   const addNewPackage = (index) => {
     const newPackage = formik.values.packages[index]?.lock
       ? {
-          boxWidth: formik.values.packages[index]?.boxWidth || '',
-          boxLength: formik.values.packages[index]?.boxLength || '',
-          boxBreadth: formik.values.packages[index]?.boxBreadth || '',
-          volumetricWeight: formik.values.packages[index]?.volumetricWeight || '',
-          approxWeight: formik.values.packages[index]?.approxWeight || '',
-          withInvoice: false,
-          images: [],
-          lock: false,
-        }
+        boxWidth: formik.values.packages[index]?.boxWidth || '',
+        boxLength: formik.values.packages[index]?.boxLength || '',
+        boxBreadth: formik.values.packages[index]?.boxBreadth || '',
+        volumetricWeight: formik.values.packages[index]?.volumetricWeight || '',
+        approxWeight: formik.values.packages[index]?.approxWeight || '',
+        packageValue: formik.values.packages[index]?.packageValue || '',
+        boxDescription: formik.values.packages[index]?.boxDescription || '',
+        packageValue: formik.values.packages[index].packageValue || "",
+        ewaybillNo:formik.values.packages[index]?.ewaybillNo || "",
+        withInvoice: false,
+        images: [],
+        lock: false,
+      }
       : { withInvoice: false, images: [] };
-  
+
     const updatedPackages = [...formik.values.packages, newPackage];
     setPackages(updatedPackages);
     setImagePreviews([...imagePreviews, []]);
-  
-    // 🔑 Make sure Formik knows about the new fields
+
+    // Make sure Formik knows about the new fields
     formik.setFieldValue("packages", updatedPackages);
   };
   // useEffect(()=>{
@@ -109,20 +116,20 @@ const PickupSection2 = ({ formik, setSkip, skip, imagePreviews, setImagePreviews
   const removePackage = (index) => {
     const updatedPackages = [...formik.values.packages];
     updatedPackages.splice(index, 1); // Remove package
-  
+
     const updatedPreviews = [...imagePreviews];
     updatedPreviews.splice(index, 1); // Remove image preview
-  
+
     setPackages(updatedPackages);
     setImagePreviews(updatedPreviews);
-  
+
     // Remove touched fields related to that package
     const newTouched = { ...formik.touched };
     const newErrors = { ...formik.errors };
-  
+
     delete newTouched.packages?.[index];
     delete newErrors.packages?.[index];
-  
+
     // Reindex touched/errors to match new indexes
     if (formik.touched.packages) {
       newTouched.packages = formik.touched.packages.filter((_, i) => i !== index);
@@ -157,8 +164,93 @@ const PickupSection2 = ({ formik, setSkip, skip, imagePreviews, setImagePreviews
   return (
     <div className="container mx-auto">
       <div className="p-5 m-5 border rounded-md border-bg-custom-gray">
-        <div className="flex bold-sansation items-center">
-          <h3 className="text-2xl">Box Details</h3>
+        <div className="font-sansation items-center">
+          <h3 className="bold-sansation text-2xl">Box Details</h3>
+          <div className="flex flex-wrap  gap-3 items-center" style={{ marginTop: "10px" }}>
+            {/* Box Type */}
+            <div className="">
+            <label className="font-sansation font-regular text-md">
+              Box Type<span className="text-red-500"> *</span>
+            </label>
+
+            <Select
+              options={options2}
+              placeholder="Select"
+              name="boxType"
+              value={options2.find(
+                (option) => option?.value === formik.values?.boxType
+              )}
+              onChange={(option) =>
+                formik.setFieldValue("boxType", option?.value)
+              }
+              styles={{
+                control: (provided) => ({
+                  ...provided,
+                  minHeight: "45px",
+                  width:"100%",
+                  minWidth:"200px",
+                  height: "45px",
+                  borderRadius: "8px",
+                  marginTop: "10px",
+                  fontSize: "14px",
+                }),
+                option: (provided) => ({
+                  ...provided,
+                  fontSize: "14px",
+                }),
+              }}
+              onBlur={() => formik.setFieldTouched("boxType", true)}
+              isClearable
+            />
+
+            {formik.touched.boxType && formik.errors.boxType && (
+              <span className="text-[#FF0000] text-sm">
+                {formik.errors.boxType}
+              </span>
+            )}
+            </div>
+            {/* No of Boxes */}
+            <div >
+              <label className="font-sansation font-regular text-md">
+                No. of Boxes<span className="text-red-500"> *</span>
+              </label>
+              <input
+                type="number"
+                name="noOfBoxes"
+                placeholder="Enter number of boxes"
+                className="w-full mt-[10px] h-[45px] rounded-lg border px-3 text-sm"
+                value={noOfBoxes}
+                onChange={(e)=>setNoOfBoxes(e.target.value)}
+                onBlur={formik.handleBlur}
+                min={1}
+              />
+              {formik.touched.noOfBoxes && formik.errors.noOfBoxes && (
+                <span className="text-[#FF0000] text-sm">
+                  {formik.errors.noOfBoxes}
+                </span>
+              )}
+            </div>
+            {/* Are all boxes identical */}
+            <div className="flex items-center gap-2 mt-4">
+              <input
+                type="checkbox"
+                id="identicalBoxes"
+                name="identicalBoxes"
+                checked={isAllSame}
+                onChange={(e) =>
+                  setIsAllSame(e.target.checked)
+                }
+                className="w-4 h-4 cursor-pointer"
+              />
+              <label
+                htmlFor="identicalBoxes"
+                className="font-sansation text-sm cursor-pointer"
+              >
+                Are all boxes identical?
+              </label>
+            </div>
+          </div>
+
           {/* <div className="items-center flex mt-1 mx-5">
             <div>
               <div className="flex gap-2 relative">
@@ -223,16 +315,16 @@ const PickupSection2 = ({ formik, setSkip, skip, imagePreviews, setImagePreviews
                       error={formik.errors.packages?.[index]?.boxLength}
                       touched={formik.touched.packages?.[index]?.boxLength}
                     />
-                    <div className="flex items-center" style={{height:"50px",marginTop:"-18px"}}>
-                      {formik.values?.packages[index]?.lock ? <MdLockOutline color="red" size={20} onClick={()=>formik.setFieldValue(`packages[${index}].lock`,false)} /> : <MdLockOpen color="red" size={20} onClick={()=>formik.setFieldValue(`packages[${index}].lock`,true)}/>}
-                    </div>
+                    {!isAllSame && <div className="flex items-center" style={{ height: "50px", marginTop: "-18px" }}>
+                      {formik.values?.packages[index]?.lock ? <MdLockOutline color="red" size={20} onClick={() => formik.setFieldValue(`packages[${index}].lock`, false)} /> : <MdLockOpen color="red" size={20} onClick={() => formik.setFieldValue(`packages[${index}].lock`, true)} />}
+                    </div>}
                   </div>
 
                   <h5 className="bold-sansation mt-3">Upload Images</h5>
                   <div
                     className="w-full h-[5rem] flex items-center justify-center mt-2 p-2 border-dashed border-2 border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-blue-500"
                     onDrop={(e) => handleDrop(e, index)}
-                    onDragOver={(e) => e.preventDefault()} // Allow dropping
+                    onDragOver={(e) => e.preventDefault()}
                   >
                     <input
                       type="file"
@@ -282,7 +374,7 @@ const PickupSection2 = ({ formik, setSkip, skip, imagePreviews, setImagePreviews
                       <CustomInputField
                         title="Volumetric Weight"
                         type="number"
-                        placeholder="Enter volumetric weight"
+                        placeholder="volumetric weight"
                         name={`packages[${index}].volumetricWeight`}
                         value={formik.values.packages[index]?.volumetricWeight}
                         onChange={formik.handleChange}
@@ -295,9 +387,9 @@ const PickupSection2 = ({ formik, setSkip, skip, imagePreviews, setImagePreviews
                     </div>
                     <div className="w-1/2">
                       <CustomInputField
-                        title="Approx Weight"
+                        title="Approximate Weight"
                         type="number"
-                        placeholder="Enter approx weight"
+                        placeholder="Enter approximate weight"
                         name={`packages[${index}].approxWeight`}
                         value={formik.values.packages[index]?.approxWeight}
                         onChange={formik.handleChange}
@@ -358,14 +450,14 @@ const PickupSection2 = ({ formik, setSkip, skip, imagePreviews, setImagePreviews
                             </p>
                           </div>
                           <div className="flex items-center gap-2 m-2">
-                          {formik.values.packages[index]?.declarationFile && (
-                            <img
-                              src={formik.values.packages[index].declarationFile}
-                              alt="E-Way Bill"
-                              className="w-10 h-10 object-contain"
-                            />
-                          )}
-                        </div>
+                            {formik.values.packages[index]?.declarationFile && (
+                              <img
+                                src={formik.values.packages[index].declarationFile}
+                                alt="E-Way Bill"
+                                className="w-10 h-10 object-contain"
+                              />
+                            )}
+                          </div>
                         </div>
                         {formik.errors.packages?.[index]?.declarationFile && formik.touched.packages?.[index]?.declarationFile && (
                           <div className="text-red-500 text-sm mt-1">{formik.errors.packages[index].declarationFile}</div>
@@ -457,10 +549,10 @@ const PickupSection2 = ({ formik, setSkip, skip, imagePreviews, setImagePreviews
               </div>
             ))}
 
-            <div className="flex items-center justify-end mt-4 text-sm gap-1 text-custom-green bold-sansation cursor-pointer" onClick={()=>addNewPackage(formik.values.packages?.length-1)}>
+            {!isAllSame && <div className="flex items-center justify-end mt-4 text-sm gap-1 text-custom-green bold-sansation cursor-pointer" onClick={() => addNewPackage(formik.values.packages?.length - 1)}>
               <FaPlus />
               <p>Add More</p>
-            </div>
+            </div>}
           </div>
         )}
       </div>

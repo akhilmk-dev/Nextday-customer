@@ -95,7 +95,7 @@ export const countryValidation = Yup.string().required("Country is required");
 export const pickUpTimeValidation = Yup.string()
   .required("Pickup time is required")
 
-export const pickupApproxWeightValidation = Yup.string().required("Approx weight is required");
+export const pickupApproxWeightValidation = Yup.string().required("Actual weight is required");
 
 export const pickupScheduleFromValidation = Yup.string().required("schedule from time is required")
 

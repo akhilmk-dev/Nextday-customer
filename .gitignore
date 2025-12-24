@@ -1,16 +1,23 @@
-# Ignore node_modules directory
+# Dependencies
 node_modules/
 
-__MACOSX/
-# Ignore build directories
+# Build output
 dist/
 build/
 
-# Ignore IDE files
+# Environment files
+.env
+.env.*
+.envs/
+
+# IDE / Editor files
 .vscode/
 .idea/
 
-# Ignore OS files
+# OS files
 .DS_Store
 Thumbs.db
-.envs
+__MACOSX/
+
+# Archives
+*.zip

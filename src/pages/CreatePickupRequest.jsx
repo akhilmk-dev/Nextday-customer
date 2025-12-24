@@ -174,12 +174,12 @@ const CreatePickupRequest = () => {
                     </div>
 
                     <div className=" ">
-                      <label className="block font-regular font-sansation" htmlFor="approxWeight">Approximate Weight<span className="text-red-500"> *</span></label>
+                      <label className="block font-regular font-sansation" htmlFor="approxWeight">Actual Weight<span className="text-red-500"> *</span></label>
                       <Field
                         type="number"
                         id="approxWeight"
                         name="approxWeight"
-                        placeholder="Enter approx weight"
+                        placeholder="Enter actual weight"
                         style={{ height: "45px" }}
                         className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />

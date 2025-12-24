@@ -113,7 +113,7 @@ const MyBookingDetailView = () => {
               </div>
               <div className="text-custom-white text-sm font-sansation font-regular">
                 <p className="text-[#BDBDBD] ">Customer Care</p>
-                <p>1800-737-7373</p>
+                <p>+91 77363 63692</p>
               </div>
             </div>
           </div>
@@ -123,8 +123,8 @@ const MyBookingDetailView = () => {
           <div>
             <MyGoogleMap latitude={consignerLat} longitude={consignerLong} />
             <div className="flex justify-end gap-2">
-              {bookingDetails?.canMarkPickupReady && <div className="flex justify-end"><Button type="button" buttonText="Ready to pickup" className="my-2" onClick={handleReadyToPickup} /> </div>}
-              {bookingDetails?.canMarkPickupReady && <div className="flex justify-end "><Button type="button" buttonText="Cancel Pickup" className="my-2 bg-gray-400 text-gray-900"/> </div>}
+              {(bookingDetails?.canMarkPickupReady && bookingDetails?.bookingStatus =='PickupScheduled')&& <div className="flex justify-end"><Button type="button" buttonText="Ready to pickup" className="my-2" onClick={handleReadyToPickup} /> </div>}
+              {/* {bookingDetails?.canMarkPickupReady && <div className="flex justify-end "><Button type="button" buttonText="Cancel Pickup" className="my-2 bg-gray-400 text-gray-900"/> </div>} */}
             </div>
 
           </div>
@@ -134,15 +134,15 @@ const MyBookingDetailView = () => {
           <div><span className="text-xl bold-sansation">Your Package Status</span><span className="bg-[#D9FFEF] text-custom-green ms-2 p-1 px-2 rounded-md text-xs">
             {bookingDetails?.bookingStatus}
           </span></div>
-          <CheckoutStepper2 stepsConfig={bookingDetails?.trackingHistory ? JSON.parse(bookingDetails?.trackingHistory) : ""} />
+          <CheckoutStepper2 stepsConfig={bookingDetails?.trackingHistory ? JSON.parse(bookingDetails?.trackingHistory) : []} />
         </div>
 
-        <div className="mb-10 mt-3 mx-2">
+       {bookingDetails?.bookingStatus =='DeliveryCompleted' && <div className="mb-10 mt-3 mx-2">
           <h4 className="bold-sansation text-md">Rate Your Delivery Experience</h4>
           {bookingDetails?.canRate && <Rating name="size-large" defaultValue={rating || bookingDetails?.deliveryRating || 0} onChange={(e, value) => setRating(value)} size="large" className="mt-2" />}
           {bookingDetails?.canRate == 0 && <Rating name="size-large" defaultValue={rating || bookingDetails?.deliveryRating || 0} size="large" className="mt-2" />}
           {bookingDetails?.canRate && <Button type="button" buttonText="Submit & Continue" className="mt-2" onClick={handleRatingSubmit} />}
-        </div>
+        </div>}
 
       </div>}
       {isRatingModalOpen && <RatingModal id={id} setRating={setRating} rating={rating || bookingDetails?.deliveryRating || 0} isRatingModalOpen={isRatingModalOpen} setIsRatingModalOpen={setIsRatingModalOpen} />}

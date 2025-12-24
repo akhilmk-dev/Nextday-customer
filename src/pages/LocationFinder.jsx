@@ -295,7 +295,7 @@ const LocationFinder = () => {
                                             <div className="flex justify-center">
                                                 <div className="mt-3">
                                                     <ReCAPTCHA
-                                                        sitekey="6Lf94U8rAAAAALKTtDsMDBfY9bT14sCPiq4G3awr"
+                                                        sitekey="6Lc9ca4rAAAAAIS9AbQ_0PLhuTbx398CNm7jOAy8"
                                                         onChange={handleRecaptchaChange}
                                                     />
                                                 </div>
@@ -432,12 +432,6 @@ const LocationFinder = () => {
                                                 </div>
                                                 <div className="border p-2">
                                                     <span className="font-sansation text-sm">{locationData?.roadoda ? <TiTick style={{ display: "inline" }} className="text-2xl text-custom-green" /> : <IoClose style={{ display: "inline" }} className="text-2xl text-red-500" />} Road ODA</span>
-                                                </div>
-                                                <div className="border p-2">
-                                                    <span className="font-sansation text-sm">{locationData?.prime ? <TiTick style={{ display: "inline" }} className="text-2xl text-custom-green" /> : <IoClose style={{ display: "inline" }} className="text-2xl text-red-500" />} Prime</span>
-                                                </div>
-                                                <div className="border p-2">
-                                                    <span className="font-sansation text-sm">{locationData?.primeplus ? <TiTick style={{ display: "inline" }} className="text-2xl text-custom-green" /> : <IoClose style={{ display: "inline" }} className="text-2xl text-red-500" />} {`Prime Plus` + " > +" + "12PM"}</span>
                                                 </div>
                                                 <div className="border p-2">
                                                     <span className="font-sansation text-sm">{locationData?.reversePickup ? <TiTick style={{ display: "inline" }} className="text-2xl text-custom-green" /> : <IoClose style={{ display: "inline" }} className="text-2xl text-red-500" />} Reverse-Pickup</span>

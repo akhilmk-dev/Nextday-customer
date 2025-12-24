@@ -57,6 +57,7 @@ const CreatePickup_Stage3 = forwardRef((props, ref) => {
         pickupScheduleFrom:formik.values?.pickupScheduleFrom,
         pickupScheduleTo:formik.values?.pickupScheduleTo,
         boxesJson:packagesJson,
+        isAppoinment:props?.isAppoinment,
         insuranceProviderId:selectedOption?.value
       }
     })
@@ -159,7 +160,7 @@ const CreatePickup_Stage3 = forwardRef((props, ref) => {
                 <div className="mb-2">
                   <div className="flex items-center gap-2">
                     <FaSuitcase />
-                    <p className="text-xl font-bold font-sansation">{props?.selectedConsignerData?.fullName.split(" ")?.[0]}</p>
+                    <p className="text-xl font-bold font-sansation">{props?.selectedConsignerData?.fullName}</p>
                   </div>
                   <p>{props?.selectedConsignerData?.addressLine1 + ',' + props?.selectedConsignerData?.cityName + ',' + props?.selectedConsignerData?.stateName + "," + props?.selectedConsignerData?.postalCode + "," + props?.selectedConsignerData?.countryName}</p>
                 </div>
@@ -167,7 +168,7 @@ const CreatePickup_Stage3 = forwardRef((props, ref) => {
                 <div className="mb-4">
                   <div className="flex items-center gap-2">
                     <FaSuitcase />
-                    <p className="text-xl font-bold font-sansation">{props?.selectedConsigneeData?.fullName.split(" ")?.[0]}</p>
+                    <p className="text-xl font-bold font-sansation">{props?.selectedConsigneeData?.fullName}</p>
                   </div>
                   <p>{props?.selectedConsigneeData?.addressLine1 + ',' + props?.selectedConsigneeData?.cityName + "," + props?.selectedConsigneeData?.stateName + ',' + props?.selectedConsigneeData?.postalCode + "," + props?.selectedConsigneeData?.countryName}</p>
                 </div>

@@ -271,7 +271,7 @@ const CreateRecurringPickup = () => {
                                 <CustomInputField
                                     type="number"
                                     name="approxWeight"
-                                    placeholder="Enter approximate weight"
+                                    placeholder="Enter actual weight"
                                     title="Approx Weight"
                                     value={formik.values?.approxWeight}
                                     onChange={formik.handleChange}

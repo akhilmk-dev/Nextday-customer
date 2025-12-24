@@ -68,18 +68,14 @@ const QontoConnector = styled(StepConnector)(({ theme }) => ({
 
 const CheckoutStepper2 = ({ stepsConfig = [] }) => {
   // Determine the active step based on `stepsConfig`
-
-  const cardData = stepData.map((step, index) => {
-    if (stepsConfig[index]) {
+  const cardData = stepsConfig.map((step, index) => {
       return {
-        name: stepsConfig[index].status,
-        description: dateTimeformater(stepsConfig[index].updatedAt),
-        status: stepsConfig[index].status,
-        hub: stepsConfig[index].location,
+        name: step.status,
+        description: dateTimeformater(step.updatedAt),
+        status: step.status,
+        hub: step.location,
         check: 2
       };
-    }
-    return step;
   });
 
   const [activeStep, setActiveStep] = useState(cardData.filter(item => item.check == 2).length - 1);
