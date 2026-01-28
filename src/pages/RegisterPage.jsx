@@ -8,8 +8,10 @@ import {
   registerInitialValues,
   registerSchema,
 } from "../utils/validation-schema/auth-schema/authSchema";
+import request from '../utils/request';
+import toast from "react-hot-toast";
 
-const RegisterPage = () => {
+const RegisterPage = ({ setIsLoginModalOpen}) => {
   // setClickRegister is a state from myContext that will be used to
   // update the context state to indicate whether the "Register" action was clicked or not.
   const { setClickRegister } = useContext(myContext);
@@ -19,7 +21,35 @@ const RegisterPage = () => {
     registerInitialValues,
     registerSchema,
     (values) => {
-      // console.log("Register Form submitted", values);
+      request({
+        url: `V1/customer/customerRegistration`,
+        method: 'POST',
+        data: {
+          "fullName": values?.name,
+          "email": values?.email,
+          "phonenumber":values?.phoneNumber,
+          "password":values?.password
+        }
+      }) .then((response) => {
+        if (response.data) {
+          setClickRegister(false)
+          setIsLoginModalOpen(false)
+          toast.dismiss();
+          toast.success("Registeration Successfull.Please login to continue");
+        }
+      })
+      .catch(function (err) {
+        if (err.response.status === 400) {
+          toast.dismiss();
+          toast.error(err.response.data.message||"validation error")
+        }else if (err.response.status == 500) {
+          toast.dismiss();
+          toast.error(err.response.data.message)
+        }else{
+          toast.dismiss();
+          toast.error("Something went wrong")
+        }
+      })
     }
   );
 
@@ -103,6 +133,18 @@ const RegisterPage = () => {
             onBlur={formik.handleBlur}
             error={formik.errors.password}
             touched={formik.touched.password}
+          />
+          <CustomInputField
+            title="Confirm Your Password"
+            type="text"
+            placeholder="Confirm Your Password"
+            name="confirmPassword"
+            isMandatory={true}
+            value={formik.values.confirmPassword}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.errors.confirmPassword}
+            touched={formik.touched.confirmPassword}
           />
         </div>
         <div className="bold-sansation pt-5">

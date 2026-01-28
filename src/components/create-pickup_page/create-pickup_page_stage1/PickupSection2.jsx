@@ -75,7 +75,7 @@ const PickupSection2 = ({ formik, setSkip, skip, imagePreviews, setImagePreviews
   };
   const options2 = [
     // { value: "dox", label: "Dox" },
-    { value: "nondox", label: "Non Dox" }
+    { value: "non-dox", label: "Non Dox" }
   ];
   const addNewPackage = (index) => {
     const newPackage = formik.values.packages[index]?.lock
@@ -87,7 +87,7 @@ const PickupSection2 = ({ formik, setSkip, skip, imagePreviews, setImagePreviews
         approxWeight: formik.values.packages[index]?.approxWeight || '',
         packageValue: formik.values.packages[index]?.packageValue || '',
         boxDescription: formik.values.packages[index]?.boxDescription || '',
-        packageValue: formik.values.packages[index].packageValue || "",
+        packageNumber: formik.values.packages[index].packageNumber || "",
         ewaybillNo:formik.values.packages[index]?.ewaybillNo || "",
         withInvoice: false,
         images: [],
@@ -247,7 +247,7 @@ const PickupSection2 = ({ formik, setSkip, skip, imagePreviews, setImagePreviews
                 className="font-sansation text-sm cursor-pointer"
               >
                 Are all boxes identical?
-              </label>
+              </label> 
             </div>
           </div>
 
@@ -465,9 +465,10 @@ const PickupSection2 = ({ formik, setSkip, skip, imagePreviews, setImagePreviews
                       </div>
                     </div>
                   )}
-                  <div className="mt-2">
+                  <div className="flex gap-4 pt-3">
+                  <div className="w-1/2">
                     <CustomInputField
-                      title="Package Value (₹)"
+                      title="Invoice Value (₹)"
                       type="number"
                       placeholder="Enter Package Value"
                       name={`packages[${index}].packageValue`}
@@ -478,6 +479,21 @@ const PickupSection2 = ({ formik, setSkip, skip, imagePreviews, setImagePreviews
                       touched={formik.touched.packages?.[index]?.packageValue}
                       isMandatory={true}
                     />
+                  </div>
+
+                  <div className="w-1/2">
+                    <CustomInputField
+                      title="Invoice Number"
+                      type="number"
+                      placeholder="Enter invoice number"
+                      name={`packages[${index}].packageNumber`}
+                      value={formik.values.packages[index]?.packageNumber}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      error={formik.errors.packages?.[index]?.packageNumber}
+                      touched={formik.touched.packages?.[index]?.packageNumber}
+                    />
+                  </div>
                   </div>
 
                   <div className="flex flex-col sm:flex-row mt-1 gap-1 sm:gap-4">

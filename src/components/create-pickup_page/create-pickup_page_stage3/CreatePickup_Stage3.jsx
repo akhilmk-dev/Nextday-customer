@@ -7,11 +7,12 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import request from '../../../utils/request';
 import { FaSuitcase } from "react-icons/fa";
+import toast from "react-hot-toast";
 
 const CreatePickup_Stage3 = forwardRef((props, ref) => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [insuranceList, setInsuranceList] = useState();
-  const { formik } = props;
+  const { formik,isAllSame,noOfBoxes } = props;
 
   const handleSelect = (option) => {
     props?.setInsurance(option)
@@ -39,11 +40,13 @@ const CreatePickup_Stage3 = forwardRef((props, ref) => {
   };
 
   // const modifiedPackages = formik.values?.packages?.map(({ images, ewaybillFile, declarationFile, ...rest }) => rest);
-  const modifiedPackages = formik.values?.packages?.map(({ images, ewaybillFile, declarationFile, ...rest }) => ({
+  const modifiedPackages = formik.values?.packages?.map(({ images,ewaybillFile, declarationFile, ...rest }) => ({
     ...rest,
-    boxType: formik.values?.boxType  // inject boxType into each package
+    boxType: formik.values?.boxType,
+    isIdentical:isAllSame ? true : false,
+    noOfBoxes:Number(noOfBoxes),   
   }));
-  const packagesJson = JSON.stringify(modifiedPackages);
+  const packagesJson = isAllSame ? JSON.stringify([modifiedPackages[0]]):JSON.stringify(modifiedPackages);
 
   const fetchSummaryDetails = () => {
     request({
@@ -52,10 +55,7 @@ const CreatePickup_Stage3 = forwardRef((props, ref) => {
       data:{
         consignerAddressId:props?.selectedConsigner,
         consigneeAddressId:props?.selectedConsignee,
-        noOfBoxes:formik.values?.packages?.length,
         modeOfTransport:formik.values?.modeType,
-        pickupScheduleFrom:formik.values?.pickupScheduleFrom,
-        pickupScheduleTo:formik.values?.pickupScheduleTo,
         boxesJson:packagesJson,
         isAppoinment:props?.isAppoinment,
         insuranceProviderId:selectedOption?.value
@@ -69,7 +69,11 @@ const CreatePickup_Stage3 = forwardRef((props, ref) => {
         if (error.response?.status === 500) {
           toast.dismiss();
           toast.error(error.response.data.message);
+        }else{
+          toast.dismiss();
+          toast.error(error.response.data.message || "Something went wrong")
         }
+        
       });
   };
 

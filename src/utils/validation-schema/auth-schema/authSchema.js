@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import { addressValidation, cancelValidation, cityValidation, commentValidation, confirmPassword, currentPasswordValidation, customerValidation, emailValidation, gstNumberValidation, loginUsername, monthlyDateValidation, nameValidation, newPasswordValidation, otpValidation, passwordValidation, phoneValidation, pickupApproxWeightValidation, pickupDateValidation, pickupFrequencyValidation, pickupScheduleFromValidation, pickupScheduleToValidation, pickUpTimeValidation, pincodeValidation, pincodeValidation2, ratingValidation, stateValidation, weeklyDayValidation } from "../commonValidation";
+import { addressValidation, cancelValidation, cityValidation, commentValidation, confirmPassword, confirmPasswordValidation, currentPasswordValidation, customerValidation, emailValidation, gstNumberValidation, loginUsername, monthlyDateValidation, nameValidation, newPasswordValidation, otpValidation, passwordValidation, phoneValidation, pickupApproxWeightValidation, pickupDateValidation, pickupFrequencyValidation, pickupScheduleFromValidation, pickupScheduleToValidation, pickUpTimeValidation, pincodeValidation, pincodeValidation2, ratingValidation, stateValidation, weeklyDayValidation } from "../commonValidation";
 
 // --------------------- login section ----------------------
 export const loginInitialValues = {
@@ -18,14 +18,16 @@ export const registerInitialValues = {
     email: "",
     name: "",
     phoneNumber: "",
-    password: ""
+    password: "",
+    confirmPassword:""
 };
 
 export const registerSchema = Yup.object().shape({
     email: emailValidation,
     name: nameValidation,
     phoneNumber: phoneValidation,
-    password: passwordValidation
+    password: passwordValidation,
+    confirmPassword: confirmPasswordValidation
 });
 //-------------------- register section end ---------------------
 

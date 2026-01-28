@@ -138,11 +138,11 @@ function Navbar({ className }) {
                     <div className="flex items-center gap-2">
                       <div className="flex-none font-sansation font-regular text-xs flex gap-1 ml-3 p-2 items-center ">
                         <IoMail className="text-custom-green" />
-                        <p>csm@nextday.services</p>
+                        <p style={{fontSize:"13px"}}>csm@nextday.services</p>
                       </div>
                       <div className="flex-none  font-sansation font-regular text-xs  flex gap-1  p-2 items-center ">
                         <IoMdTime className="text-custom-green" />
-                        <p>Mon - Fri 09:00 AM - 05:00 PM</p>
+                        <p style={{fontSize:"13px"}}>Mon - Fri 09:00 AM - 05:00 PM</p>
                       </div>
                     </div>
 
@@ -165,8 +165,8 @@ function Navbar({ className }) {
                           <>
                             <div className="flex items-center gap-1 cursor-pointer " onClick={() => setIsAccountModalOpen(!isAccountModalOpen)}>
 
-                              <FaUserCircle className="text-custom-green " />
-                              <p>{userData.fullName}</p>
+                              <FaUserCircle className="text-custom-green " size={17} />
+                              <p style={{fontSize:"13px"}}>{userData.fullName}</p>
                             </div>
                           </>
                         ) : (
@@ -182,6 +182,7 @@ function Navbar({ className }) {
                               <button
                                 className="flex items-center px-4 py-2 rounded-md text-custom-green hover:bg-gray-200"
                                 onClick={() => { navigate(`/home/${userType.toLowerCase()}/my-profile`); setIsAccountModalOpen(false); }}
+                                style={{fontSize:"14px"}}
                               >
                                 <FaUserCircle className="mr-2" />
                                 Profile
@@ -189,6 +190,7 @@ function Navbar({ className }) {
                               <button
                                 className="flex items-center px-4 rounded-md py-2 text-custom-green hover:bg-gray-200"
                                 onClick={() => setIsOpen(true)}
+                                style={{fontSize:"14px"}}
                               >
                                 <FaArrowRight className="mr-2" />
                                 Logout
@@ -200,16 +202,16 @@ function Navbar({ className }) {
 
                       <div className="flex items-center justify-end gap-3 p-2 text-xs">
                         {isLogin ? (<p>|</p>) : (<p></p>)}
-                        <p title="Facebook">
+                        <p title="Facebook" style={{fontSize:"14px"}}>
                           <FaFacebookF className="cursor-pointer hover:text-custom-green" />
                         </p>
-                        <p title="Twitter">
+                        <p title="Twitter" style={{fontSize:"14px"}}>
                           <FaTwitter className="cursor-pointer hover:text-custom-green" />
                         </p>
-                        <p title="Linkedin">
+                        <p title="Linkedin" style={{fontSize:"14px"}}>
                           <FaLinkedinIn className="cursor-pointer hover:text-custom-green" />
                         </p>
-                        <p title="Instagram">
+                        <p title="Instagram" style={{fontSize:"14px"}}>
                           <FaInstagram className="cursor-pointer hover:text-custom-green" />
                         </p>
                       </div>

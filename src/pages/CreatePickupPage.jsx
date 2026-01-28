@@ -162,7 +162,7 @@ const CreatePickupPage = () => {
     // postalCode: ""
     // ,
     modeType: "road",
-    boxType: "nondox",
+    boxType: "non-dox",
     toPay: 0,
     packages: [
       {
@@ -173,6 +173,7 @@ const CreatePickupPage = () => {
         volumetricWeight: "",
         approxWeight: "",
         packageValue: "",
+        packageNumber:"",
         images: null,
         ewaybillNo:"",
         declarationFile: null,
@@ -215,7 +216,7 @@ const CreatePickupPage = () => {
         // postalCode: ""
         // ,
         modeType: "road",
-        boxType: "nondox",
+        boxType: "non-dox",
         toPay: 0,
         packages: [
           {
@@ -227,6 +228,7 @@ const CreatePickupPage = () => {
             approxWeight: "",
             packageValue: "",
             ewaybillNo:"",
+            packageNumber:"",
             images: null,
             ewaybillFile: null,
             withInvoice: false
@@ -252,6 +254,7 @@ const CreatePickupPage = () => {
         declarationFile: item?.declarationFile,
         ewaybillFile: item?.ewaybillFile,
         withInvoice: item?.withInvoice,
+        packageNumber: item?.packageNumber
       }))
       setFormData({
         pickupScheduleFrom: convertDateFormatUTC(bookingDetails?.pickupRequest?.pickupScheduleFrom),
@@ -407,7 +410,7 @@ const CreatePickupPage = () => {
             otherCharges: summaryData?.insuranceAmount ? summaryData?.insuranceAmount : 0,
             taxAmount: summaryData?.shippingTax ? summaryData?.shippingTax : 0,
             grandTotal: summaryData?.grandTotal ? summaryData?.grandTotal : 0,
-            boxesJson: JSON.stringify(values?.packages),
+            boxesJson: JSON.stringify(values?.packages?.map(item=> ({...item,isIdentical:isAllSame,noOfBoxes,boxType:values?.boxType}))),
             createdByStaffId: null,
             franchiseId: null,
             pickupReqId: pickupReqId ? pickupReqId : null,
@@ -423,6 +426,7 @@ const CreatePickupPage = () => {
             sessionStorage.removeItem("pickupOptions");
             sessionStorage.removeItem("selectedConsigner");
             sessionStorage.removeItem("selectedConsignee");
+            toast.dismiss()
             toast.success(response?.message)
           } catch (err) {
             console.error("Failed to remove item from sessionStorage:", err);
@@ -470,7 +474,7 @@ const CreatePickupPage = () => {
             otherCharges: summaryData?.insuranceAmount ? summaryData?.insuranceAmount : 0,
             taxAmount: summaryData?.shippingTax ? summaryData?.shippingTax : 0,
             grandTotal: summaryData?.grandTotal ? summaryData?.grandTotal : 0,
-            boxesJson: JSON.stringify(values?.packages),
+            boxesJson: JSON.stringify(values?.packages?.map(item=> ({...item,isIdentical:isAllSame,noOfBoxes,boxType:values?.boxType}))),
             createdByStaffId: null,
             franchiseId: null,
             pickupReqId: pickupReqId ? pickupReqId : null,
@@ -560,7 +564,6 @@ const CreatePickupPage = () => {
     }, delay);
   };
 
-
   useEffect(() => {
     if (formik.values) {
       debounceSessionSave("package", formik.values);
@@ -627,7 +630,11 @@ const CreatePickupPage = () => {
       // setFormData(formik.values);
 
       // markAllFieldsTouched();
-
+      if(noOfBoxes != formik.values?.packages?.length && !isAllSame){
+        toast.dismiss()
+        toast.error(`${noOfBoxes} boxes are required`)
+        return;
+      }
       formik.validateForm().then((errors) => {
         markAllFieldsTouched(); // Mark fields as touched AFTER validation triggers errors
         if (Object.keys(errors).length === 0 && !skip) {
@@ -688,7 +695,7 @@ const CreatePickupPage = () => {
 
         {/* ------------- pickup third page ----------- */}
 
-        {currentStep === 3 && <CreatePickup_Stage3 summaryData={summaryData} setSummaryData={setSummaryData} insurance={insurance} setInsurance={setInsurance} isAppoinment={isAppoinment} ref={stage3Ref} formik={formik} selectedConsignee={selectedConsignee} selectedConsigner={selectedConsigner} selectedConsigneeData={selectedConsigneeData} selectedConsignerData={selectedConsignerData} />}
+        {currentStep === 3 && <CreatePickup_Stage3 summaryData={summaryData} isAllSame={isAllSame} noOfBoxes={noOfBoxes} setSummaryData={setSummaryData} insurance={insurance} setInsurance={setInsurance} isAppoinment={isAppoinment} ref={stage3Ref} formik={formik} selectedConsignee={selectedConsignee} selectedConsigner={selectedConsigner} selectedConsigneeData={selectedConsigneeData} selectedConsignerData={selectedConsignerData} />}
 
         {/* ------------- pickup third page end----------- */}
 

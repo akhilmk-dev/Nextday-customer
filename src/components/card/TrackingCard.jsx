@@ -140,7 +140,7 @@ const TrackingCard = ({ data, status, onClick }) => {
           <div className=' mr-10 '>
             <CheckoutStepper stepsConfig={data?.statusHistory ? JSON?.parse(data?.statusHistory) : []} />
           </div>
-          {(data?.isBookingEditable && data?.Source === "Booking") && <span className='position-absolute ' onClick={(e) => { e.stopPropagation(); navigate(`/create-pickup?id=${data?.bookingId}`) }} style={{ right: "5px", bottom: "5px", position: "absolute" }}><FaRegEdit size={22} color='green' /></span>}
+          {/* {(data?.isBookingEditable && data?.Source === "Booking") && <span className='position-absolute ' onClick={(e) => { e.stopPropagation(); navigate(`/create-pickup?id=${data?.bookingId}`) }} style={{ right: "5px", bottom: "5px", position: "absolute" }}><FaRegEdit size={22} color='green' /></span>} */}
         </div>
       </div>
     </div>

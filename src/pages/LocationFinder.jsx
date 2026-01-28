@@ -292,7 +292,7 @@ const LocationFinder = () => {
                                                         </div>
                                                     )}
                                             </div>
-                                            <div className="flex justify-center">
+                                            <div className="flex justify-start">
                                                 <div className="mt-3">
                                                     <ReCAPTCHA
                                                         sitekey="6Lc9ca4rAAAAAIS9AbQ_0PLhuTbx398CNm7jOAy8"

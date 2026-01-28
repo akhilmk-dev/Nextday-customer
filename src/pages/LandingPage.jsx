@@ -316,7 +316,7 @@ const LandingPage = () => {
                                 </div>
                               )}
                           </div>
-                          <div className="flex justify-center">
+                          <div className="flex justify-start">
                             <div className="mt-3">
                               <ReCAPTCHA
                                 sitekey="6Lc9ca4rAAAAAIS9AbQ_0PLhuTbx398CNm7jOAy8"
@@ -333,7 +333,6 @@ const LandingPage = () => {
                             {loading ? <ClipLoader color="white" size={18} /> : "Track"}
                           </button>
                         </form>
-
                         {hasSearched && !loading && (
                           trackData && trackData.length > 0 ? (
                             <div className="max-h-[450px]" style={{ overflowY: "auto" }}>

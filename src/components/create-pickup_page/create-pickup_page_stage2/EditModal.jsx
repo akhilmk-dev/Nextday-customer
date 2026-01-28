@@ -77,7 +77,7 @@ const EditModal = ({ data, heading, isOpen, setEditModalOpen, fetchAddressList }
                 }).then((response) => {
                     setOptions(response?.data?.map(item => ({
                         label: item?.pincode,
-                        value: item?.pincodeId,
+                        value: item?.pincode,
                         cityName: item?.cityName,
                         cityId: item?.cityId,
                         stateName: item?.stateName,
@@ -127,10 +127,11 @@ const EditModal = ({ data, heading, isOpen, setEditModalOpen, fetchAddressList }
             name: addressData?.fullName,
             email: addressData?.emailId,
             phoneNumber: addressData?.phoneNo,
-            pincode: addressData?.pincodeId || "",
+            pincode: addressData?.postalCode || "",
             country: 1,
             state: addressData?.stateId,
             city: addressData?.cityId,
+            gstNumber:addressData?.gstNumber,
             addressLine1: addressData?.addressLine1,
             addressLine2: addressData?.addressLine2,
             addressType: addressData?.addressType,
@@ -160,6 +161,7 @@ const EditModal = ({ data, heading, isOpen, setEditModalOpen, fetchAddressList }
                 data: {
                     fullName: values?.name,
                     emailId: values?.email,
+                    gstNumber:values?.gstNumber,
                     phoneNo: values?.phoneNumber,
                     addressLabel: values?.addressLabel,
                     addressType: "'",  // Example value
@@ -196,7 +198,6 @@ const EditModal = ({ data, heading, isOpen, setEditModalOpen, fetchAddressList }
     const getAddressFromCoordinates = async (lat, lng) => {
         const apiKey = 'AIzaSyD_M5QYY_seLbsWsWtVtZRSpCFYUxjRoeI'; // Replace with your API key
         const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`;
-
         try {
             const response = await axios.get(url);
             const results = response.data.results;
@@ -217,7 +218,8 @@ const EditModal = ({ data, heading, isOpen, setEditModalOpen, fetchAddressList }
             name: addressData?.fullName,
             email: addressData?.emailId,
             phoneNumber: addressData?.phoneNo,
-            pincode: addressData?.pincodeId,
+            pincode: addressData?.postalCode,
+            gstNumber:addressData?.gstNumber,
             country: 1,
             state: addressData?.stateId,
             city: addressData?.cityId,
@@ -587,6 +589,23 @@ const EditModal = ({ data, heading, isOpen, setEditModalOpen, fetchAddressList }
                                         />
                                         <span id="addressLine2" className="text-red-500 mt-1 text-sm">
                                             {errorMap['addressLine2']}
+                                        </span>
+
+                                        <CustomInputField
+                                            type="text"
+                                            name="gstNumber"
+                                            placeholder="Enter gst number"
+                                            title="GST Number"
+                                            value={formik.values.gstNumber}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
+                                            error={formik.errors.gstNumber}
+                                            touched={formik.touched.gstNumber}
+                                            isMandatory={true}
+                                        />
+
+                                        <span id="gstNumber" className="text-red-500 mt-1 text-sm">
+                                            {errorMap['gstNumber']}
                                         </span>
                                         <h5 className="font-sansation text-lg mt-3">
                                             Possible Receivers

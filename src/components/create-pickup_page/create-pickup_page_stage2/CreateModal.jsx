@@ -53,7 +53,7 @@ const CreateModal = ({ heading, isOpen, onClose, fetchAddressList }) => {
         }).then((response) => {
           setOptions(response?.data?.map(item => ({
             label: item?.pincode,
-            value: item?.pincodeId,
+            value: item?.pincode,
             cityName: item?.cityName,
             cityId: item?.cityId,
             stateName: item?.stateName,
@@ -119,6 +119,7 @@ const CreateModal = ({ heading, isOpen, onClose, fetchAddressList }) => {
       country: "",
       state: "",
       city: "",
+      gstNumber: "",
       addressLine1: "",
       addressLine2: "",
       addressType: "",
@@ -146,6 +147,7 @@ const CreateModal = ({ heading, isOpen, onClose, fetchAddressList }) => {
         url: "V1/customer/address",
         method: "POST",
         data: {
+          gstNumber: values?.gstNumber,
           fullName: values?.name,
           emailId: values?.email,
           phoneNo: values?.phoneNumber,
@@ -477,6 +479,8 @@ const CreateModal = ({ heading, isOpen, onClose, fetchAddressList }) => {
                       {errorMap['cityId']}
                     </span>}
 
+                  
+
                     <CustomInputField
                       type="text"
                       name="addressLabel"
@@ -593,6 +597,23 @@ const CreateModal = ({ heading, isOpen, onClose, fetchAddressList }) => {
                     />
                     <span id="addressLine2" className="text-red-500 mt-1 text-sm">
                       {errorMap['addressLine2']}
+                    </span>
+
+                    <CustomInputField
+                      type="text"
+                      name="gstNumber"
+                      placeholder="Enter gst number"
+                      title="GST Number"
+                      value={formik.values.gstNumber}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      error={formik.errors.gstNumber}
+                      touched={formik.touched.gstNumber}
+                      isMandatory={true}
+                    />
+
+                    <span id="gstNumber" className="text-red-500 mt-1 text-sm">
+                      {errorMap['gstNumber']}
                     </span>
 
                     <h5 className="font-sansation text-lg mt-5">

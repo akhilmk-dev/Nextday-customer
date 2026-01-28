@@ -86,7 +86,7 @@ const CheckoutStepper = ({ stepsConfig = [] }) => {
       return {
         name: stepsConfig[index].hub,
         description: dateTimeformater(stepsConfig[index].datetime),
-        status: stepsConfig[index].hub,
+        status: stepsConfig[index].status,
         hub: stepsConfig[index].hub,
         check: 2
       };

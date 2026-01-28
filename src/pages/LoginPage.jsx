@@ -122,7 +122,7 @@ const LoginPage = () => {
                 ) : (
                   <>
                     {clickRegister ? (
-                      <RegisterPage />
+                      <RegisterPage  setIsLoginModalOpen={ setIsLoginModalOpen}/>
                     ) : (
                       <>
                         <div className="grid grid-cols-1 gap-4">
@@ -135,7 +135,7 @@ const LoginPage = () => {
                             </div>
                             <p className="bold-sansation text-4xl">{"Customer Login"}</p>
                           </div>
-                          {/* <div className="flex justify-end">
+                          <div className="flex justify-end">
                             <div>
                               <p className="font-sansation font-regular">No Account?</p>
                               <p
@@ -145,7 +145,7 @@ const LoginPage = () => {
                                 Register
                               </p>
                             </div>
-                          </div> */}
+                          </div>
 
                           <div className="col-span-2 mt-3">
                             <div className="flex gap-3">

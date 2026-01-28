@@ -47,6 +47,10 @@ export const passwordValidation = Yup.string()
   .min(6, "Must be at least 6 characters")
   .required('Password is required');
 
+export const confirmPasswordValidation = Yup.string()
+.oneOf([Yup.ref("password"), null], "Passwords must match")
+.required("Confirm password is required");
+
 export const confirmPassword = Yup.string()
   .oneOf([Yup.ref('newPassword'), null], 'Passwords must match')
   .required('Confirm Password is required');

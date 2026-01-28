@@ -250,7 +250,7 @@ const CreatePickupStage2 = ({ selectedConsigner, setSelectedConsigner, selectedC
         </div>
         {addressList.length <= 0 && <div className="text-center">No Address Found</div>}
 
-        <div className="flex items-center gap-2">
+        {addressList.length <= 0 && <div className="flex items-center gap-2">
           <div
             className="p-2 border rounded-md text-2xl text-custom-light-green cursor-pointer"
             onClick={() => setConsignerModalOpen(true)}
@@ -260,7 +260,7 @@ const CreatePickupStage2 = ({ selectedConsigner, setSelectedConsigner, selectedC
           <div>
             <p className="bold-sansation text-custom-light-green">Add New Consigner</p>
           </div>
-        </div>
+        </div>}
 
         <div className="py-6">
           <h5 className="text-xl font-sansation font-regular">Choose a Consignee<span className="text-red-500"> *</span></h5>
@@ -288,17 +288,17 @@ const CreatePickupStage2 = ({ selectedConsigner, setSelectedConsigner, selectedC
                 className={`border rounded-md p-[0.535rem] relative cursor-pointer ${selectedConsignee === item.addressId ? 'bg-gray-200' : ''}`}
                 onClick={() => handleConsigneeSelect(item)}
               >
-                {/* <img
+                <img
                   src={editIcon}
                   alt="edit icon"
                   className="absolute right-2 top-1 cursor-pointer"
                   style={{ width: "20px", height: "20px" }}
                   onClick={() => { setEditModalOpen(true); setAddressData(item); }}
-                /> */}
-                {/* <MdDelete
+                />
+                <MdDelete
                   className="absolute right-2 bottom-1 text-2xl text-red-500 cursor-pointer"
                   onClick={(e) => { e.stopPropagation(); handleDelete(item?.addressId); }}
-                /> */}
+                />
                 <div className="flex">
                   <div className="text-custom-light-green flex h-10 items-center mt-1">
                     <div className="border rounded-md p-2 text-2xl">
